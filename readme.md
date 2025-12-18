@@ -1,5 +1,3 @@
-Aquí tienes un **README.md** bien estructurado y profesional para tu proyecto 👇  
-
 ```markdown
 # 🛡️ Sistema de Autenticación Modular (Arquitectura de 4 Capas)
 
