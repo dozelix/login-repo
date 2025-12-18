@@ -1,3 +1,5 @@
 password-validator
 steamlit
-sql-connector
+mysql-connector
+dotenv
+bcrypt

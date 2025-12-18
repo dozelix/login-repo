@@ -1,24 +1,31 @@
-import hashlib
-import streamlit as st
+import mysql.connector
 
-# Simulación de tabla de base de datos
-if 'DB_USUARIOS' not in st.session_state:
-    st.session_state.DB_USUARIOS = {
-        "admin": "e183794396656711719b678125cf15f7956358c56643666f28148b5252b47e8e"
-    }
+db_config = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': '',
+    'database': 'generic_db'
+}
 
-def generar_hash(texto: str) -> str:
-    return hashlib.sha256(texto.encode()).hexdigest()
+def ejecutar_query(query, params=None):
+    """Función auxiliar para no repetir código de conexión"""
+    conn = mysql.connector.connect(**db_config)
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute(query, params)
+    resultado = cursor.fetchall()
+    conn.commit()
+    conn.close()
+    return resultado
 
-def buscar_usuario(username: str):
-    """Retorna el hash si existe, sino None."""
-    return st.session_state.DB_USUARIOS.get(username)
+def buscar_usuario(username):
+    query = "SELECT * FROM usuarios WHERE username = %s"
+    res = ejecutar_query(query, (username,))
+    return res[0] if res else None
 
-def guardar_usuario(username, password_plana):
-    """Guarda al usuario con su contraseña ya protegida."""
+def guardar_usuario(username, password_hash):
+    query = "INSERT INTO usuarios (username, password) VALUES (%s, %s)"
     try:
-        hash_pw = generar_hash(password_plana)
-        st.session_state.DB_USUARIOS[username] = hash_pw
+        ejecutar_query(query, (username, password_hash))
         return True
-    except Exception:
+    except:
         return False

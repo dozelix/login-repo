@@ -48,7 +48,7 @@ PROYECTO/
 - Se encarga del **almacenamiento**.
 - Funcionalidades:
   - Hashing **SHA-256** de las contraseñas.
-  - Gestión de búsqueda y escritura en la base de datos (simulada en `st.session_state`).
+  - Gestión de búsqueda y escritura en la base de datos (simulada en `st.session_state`). (se remplazo el hash de hashlib por bcrypt)
 
 ### 4. **Capa de Modelos (modelos/)**
 - Define el **"idioma común"** que hablan todas las capas.
