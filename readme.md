@@ -6,8 +6,10 @@ Este proyecto implementa un sistema de **login y registro profesional** utilizan
 ---
 
 ## 🏗️ Estructura del Proyecto
+```
 
 ```
+
 PROYECTO/
 │
 ├── app.py                 # Punto de entrada y orquestador de rutas
@@ -23,6 +25,7 @@ PROYECTO/
 │
 └── modelos/               # CAPA DE ENTIDADES
     └── usuario.py         # Definición del objeto Usuario
+
 ```
 
 ---
