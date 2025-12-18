@@ -1,31 +1,30 @@
-```markdown
-# 🛡️ Sistema de Autenticación Modular (Arquitectura de 4 Capas)
 
-Este proyecto implementa un sistema de **login y registro profesional** utilizando **Python** y **Streamlit**, siguiendo un modelo de **arquitectura limpia** organizada en capas de responsabilidad. eso implica que es la base para iniciar sesion en app webs con css o derivados( su arquitectura de capas permite mudar facilmente el entorno grafico) 
+# Sistema de Autenticación Modular (Arquitectura de 4 Capas)
+
+Este proyecto es una **plantilla profesional de login y registro** desarrollada con **Python** y **Streamlit**. Utiliza una **arquitectura limpia (Clean Architecture)** organizada en capas, lo que permite intercambiar el motor de base de datos o la interfaz gráfica con un esfuerzo mínimo.
 
 ---
 
 ## 🏗️ Estructura del Proyecto
-```
 
 ```
-
-PROYECTO/
+LOGIN/
 │
-├── app.py                 # Punto de entrada y orquestador de rutas
+├── app.py                 # Orquestador principal y navegación
+├── .env                   # Variables de entorno (Credenciales de DB)
+├── requirements.txt       # Dependencias del proyecto
 │
-├── ui/                    # CAPA DE PRESENTACIÓN
-│    └── registro_view.py   # Gestión de formularios y eventos visuales
+├── ui/                    # CAPA DE PRESENTACIÓN (Streamlit)
+│    └── login_view.py     # Formularios y gestión de estados visuales
 │
 ├── servicio/              # CAPA DE SERVICIO (Lógica de Negocio)
-│    └── auth_service.py    # Validación de reglas y coordinación de procesos
+│    └── auth_service.py   # Validaciones, reglas de negocio y hashing
 │
-├── persistencia/          # CAPA DE DATOS
-│    └── db_manager.py      # Hashing y comunicación con la base de datos
+├── persistencia/          # CAPA DE DATOS (MySQL)
+│    └── db_manager.py     # Consultas SQL y gestión de conexión
 │
 └── modelos/               # CAPA DE ENTIDADES
-     └── usuario.py         # Definición del objeto Usuario
-
+     └── usuario.py        # Clase Usuario (Estructura de datos)
 
 ```
 
@@ -34,76 +33,86 @@ PROYECTO/
 ## 🛠️ Descripción de las Capas
 
 ### 1. **Capa de Presentación (ui/)**
-- Contiene exclusivamente el entorno gráfico (**Streamlit**).
-- No realiza validaciones de seguridad ni toca la base de datos.
-- Su única función es capturar los datos del usuario y mostrar los mensajes de respuesta enviados por la capa de servicio.
+
+Gestiona exclusivamente la interfaz con **Streamlit**. Captura los inputs del usuario y delega la responsabilidad de validación a la capa de servicio.
 
 ### 2. **Capa de Servicio (servicio/)**
-- Es el **"cerebro"** de la aplicación.
-- Aquí residen las **Reglas de Negocio**:
-  - ¿La contraseña cumple con los requisitos de seguridad?
-  - ¿El usuario es apto para el registro?
-- Traduce errores técnicos a mensajes comprensibles para el usuario final.
+
+El **"cerebro"** del sistema. Coordina las reglas de negocio:
+
+* Validación de complejidad de clave con `password-validator`.
+* Encriptación de contraseñas mediante **bcrypt**.
+* Toma de decisiones basada en las respuestas de la base de datos.
 
 ### 3. **Capa de Persistencia (persistencia/)**
-- Se encarga del **almacenamiento**.
-- Funcionalidades:
-  - Hashing **SHA-256** de las contraseñas.
-  - Gestión de búsqueda y escritura en la base de datos (simulada en `st.session_state`). (se remplazo el hash de hashlib por bcrypt)
+
+Encargada del acceso a datos. Implementa la conexión a **MySQL** utilizando variables de entorno para una configuración segura.
 
 ### 4. **Capa de Modelos (modelos/)**
-- Define el **"idioma común"** que hablan todas las capas.
-- Al usar una clase `Usuario`, los datos viajan de forma estructurada y predecible por todo el sistema.
+
+Define el objeto `Usuario`, asegurando que los datos viajen de forma estandarizada entre la base de datos y la interfaz.
 
 ---
 
-##  Instalación y Ejecución
+## 🚀 Instalación y Ejecución
 
-1. Clonar el repositorio y entrar en la carpeta del proyecto:
-   ```bash
-   git clone <URL_DEL_REPOSITORIO>
-   cd PROYECTO
-   ```
+1. **Clonar el proyecto:**
+```bash
+git clone <URL_DEL_REPOSITORIO>
+cd LOGIN
 
-2. Instalar dependencias:
-   ```bash
-   pip install streamlit password-validator
-   ```
-
-3. Ejecutar la aplicación:
-   ```bash
-   streamlit run app.py
-   ```
-
----
-
-##  Seguridad Implementada
-
-- **Hashing de Contraseñas:** Nunca se almacenan contraseñas en texto plano.  
-- **Validación de Complejidad:** Uso de `password-validator` para exigir mayúsculas, símbolos y números.  
-- **Prevención de Duplicados:** Verificación de existencia de usuario antes de permitir el registro.  
-- **Desacoplamiento:** La interfaz no tiene acceso directo a los datos, evitando manipulaciones accidentales.  
-
----
-
-##  Enfoque del Proyecto
-
-Este sistema fue desarrollado con un enfoque en:
-- **Mantenibilidad:** Código modular y desacoplado.  
-- **Escalabilidad:** Fácil de extender con nuevas reglas de negocio o persistencia real (ej. bases de datos SQL/NoSQL).  
-- **Profesionalismo:** Arquitectura limpia y organizada por capas.  
-
----
-
-##  Próximos Pasos
-
-- Integración con una base de datos real (SQLite, PostgreSQL, MongoDB).  
-- Implementación de recuperación de contraseñas.  
-- Gestión de roles y permisos de usuario.  
-
----
-
- **Autor:** Proyecto diseñado con enfoque profesional en arquitectura modular y seguridad.
 ```
 
+
+2. **Configurar el entorno:**
+modifica el archivo `.env` en la raíz con tus credenciales:
+```env
+DB_HOST=localhost
+DB_USER=root
+DB_PASS=tu_password
+DB_NAME=generic_db
+
+```
+
+
+3. **Instalar dependencias:**
+```bash
+pip install -r requirements.txt
+
+```
+
+
+4. **Ejecutar la aplicación:**
+```bash
+streamlit run app.py
+
+```
+
+
+
 ---
+
+## 🔐 Seguridad de Nivel Profesional
+
+* **Bcrypt Hashing:** Implementa *salts* aleatorios para proteger contra ataques de tablas arcoíris y fuerza bruta.
+* **Variables de Entorno:** Uso de `python-dotenv` para mantener las credenciales fuera del código fuente.
+* **Validación Robusta:** Reglas estrictas para contraseñas (min. 8 caracteres, mayúsculas, números y símbolos).
+* **Inyección SQL:** Consultas parametrizadas para evitar ataques maliciosos a la base de datos.
+
+---
+
+## 📈 Escalabilidad
+
+Gracias al desacoplamiento, puedes:
+
+* Cambiar MySQL por **PostgreSQL** o **SQLite** solo tocando la capa de persistencia.
+* Cambiar Streamlit por **Flask/FastAPI** solo tocando la capa de presentación.
+
+---
+
+**Autor:** DøzzeL
+
+*Enfoque en arquitectura limpia, modularidad y seguridad.*
+
+
+
