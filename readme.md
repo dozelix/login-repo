@@ -15,16 +15,17 @@ PROYECTO/
 ├── app.py                 # Punto de entrada y orquestador de rutas
 │
 ├── ui/                    # CAPA DE PRESENTACIÓN
-│   └── registro_view.py   # Gestión de formularios y eventos visuales
+│    └── registro_view.py   # Gestión de formularios y eventos visuales
 │
 ├── servicio/              # CAPA DE SERVICIO (Lógica de Negocio)
-│   └── auth_service.py    # Validación de reglas y coordinación de procesos
+│    └── auth_service.py    # Validación de reglas y coordinación de procesos
 │
 ├── persistencia/          # CAPA DE DATOS
-│   └── db_manager.py      # Hashing y comunicación con la base de datos
+│    └── db_manager.py      # Hashing y comunicación con la base de datos
 │
 └── modelos/               # CAPA DE ENTIDADES
-    └── usuario.py         # Definición del objeto Usuario
+     └── usuario.py         # Definición del objeto Usuario
+
 
 ```
 
@@ -56,7 +57,7 @@ PROYECTO/
 
 ---
 
-## 🚀 Instalación y Ejecución
+##  Instalación y Ejecución
 
 1. Clonar el repositorio y entrar en la carpeta del proyecto:
    ```bash
@@ -76,7 +77,7 @@ PROYECTO/
 
 ---
 
-## 🔐 Seguridad Implementada
+##  Seguridad Implementada
 
 - **Hashing de Contraseñas:** Nunca se almacenan contraseñas en texto plano.  
 - **Validación de Complejidad:** Uso de `password-validator` para exigir mayúsculas, símbolos y números.  
@@ -85,7 +86,7 @@ PROYECTO/
 
 ---
 
-## 🎯 Enfoque del Proyecto
+##  Enfoque del Proyecto
 
 Este sistema fue desarrollado con un enfoque en:
 - **Mantenibilidad:** Código modular y desacoplado.  
@@ -94,7 +95,7 @@ Este sistema fue desarrollado con un enfoque en:
 
 ---
 
-## 📌 Próximos Pasos
+##  Próximos Pasos
 
 - Integración con una base de datos real (SQLite, PostgreSQL, MongoDB).  
 - Implementación de recuperación de contraseñas.  
@@ -102,9 +103,7 @@ Este sistema fue desarrollado con un enfoque en:
 
 ---
 
-👨‍💻 **Autor:** Proyecto diseñado con enfoque profesional en arquitectura modular y seguridad.
+ **Autor:** Proyecto diseñado con enfoque profesional en arquitectura modular y seguridad.
 ```
 
 ---
-
-¿Quieres que además te prepare un **diagrama visual de la arquitectura en capas** para incluirlo en el README? Sería un buen complemento gráfico.
