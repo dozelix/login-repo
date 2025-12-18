@@ -1,31 +1,54 @@
 import mysql.connector
+import os
+from dotenv import load_dotenv
 
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',
-    'database': 'generic_db'
-}
+# Cargamos las variables del .env
+load_dotenv()
 
-def ejecutar_query(query, params=None):
-    """Función auxiliar para no repetir código de conexión"""
-    conn = mysql.connector.connect(**db_config)
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute(query, params)
-    resultado = cursor.fetchall()
-    conn.commit()
-    conn.close()
-    return resultado
+class DBManager:
+    def __init__(self):
+        # Leemos las credenciales que pusimos en el .env
+        self.config = {
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'port': os.getenv('DB_PORT', '3306'),
+            'user': os.getenv('DB_USER', 'root'),
+            'password': os.getenv('DB_PASS', ''),
+            'database': os.getenv('DB_NAME', 'generic_db')
+        }
 
-def buscar_usuario(username):
-    query = "SELECT * FROM usuarios WHERE username = %s"
-    res = ejecutar_query(query, (username,))
-    return res[0] if res else None
+    def _conectar(self):
+        """Crea una conexión nueva a la base de datos."""
+        return mysql.connector.connect(**self.config)
 
-def guardar_usuario(username, password_hash):
-    query = "INSERT INTO usuarios (username, password) VALUES (%s, %s)"
-    try:
-        ejecutar_query(query, (username, password_hash))
-        return True
-    except:
-        return False
+    def buscar_usuario(self, username):
+        """Busca un usuario por su nombre y retorna sus datos."""
+        conn = self._conectar()
+        cursor = conn.cursor(dictionary=True) # Retorna diccionarios en lugar de tuplas
+        
+        query = "SELECT * FROM usuarios WHERE username = %s"
+        cursor.execute(query, (username,))
+        usuario = cursor.fetchone()
+        
+        cursor.close()
+        conn.close()
+        return usuario
+
+    def guardar_usuario(self, username, password_hash):
+        """Inserta un nuevo usuario con su contraseña ya hasheada."""
+        try:
+            conn = self._conectar()
+            cursor = conn.cursor()
+            
+            query = "INSERT INTO usuarios (username, password) VALUES (%s, %s)"
+            cursor.execute(query, (username, password_hash))
+            
+            conn.commit() # Importante para guardar cambios
+            cursor.close()
+            conn.close()
+            return True
+        except Exception as e:
+            print(f"Error en persistencia: {e}")
+            return False
+
+# Instancia global para ser usada por el servicio
+db_manager = DBManager()
