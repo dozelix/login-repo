@@ -5,7 +5,7 @@ Este proyecto es una **plantilla profesional de login y registro** desarrollada 
 
 ---
 
-## 🏗️ Estructura del Proyecto
+## Estructura del Proyecto
 
 ```
 LOGIN/
@@ -30,7 +30,7 @@ LOGIN/
 
 ---
 
-## 🛠️ Descripción de las Capas
+##  Descripción de las Capas
 
 ### 1. **Capa de Presentación (ui/)**
 
@@ -54,7 +54,7 @@ Define el objeto `Usuario`, asegurando que los datos viajen de forma estandariza
 
 ---
 
-## 🚀 Instalación y Ejecución
+##  Instalación y Ejecución
 
 1. **Clonar el proyecto:**
 ```bash
@@ -92,7 +92,7 @@ streamlit run app.py
 
 ---
 
-## 🔐 Seguridad de Nivel Profesional
+##  Seguridad de Nivel Profesional
 
 * **Bcrypt Hashing:** Implementa *salts* aleatorios para proteger contra ataques de tablas arcoíris y fuerza bruta.
 * **Variables de Entorno:** Uso de `python-dotenv` para mantener las credenciales fuera del código fuente.
@@ -101,7 +101,7 @@ streamlit run app.py
 
 ---
 
-## 📈 Escalabilidad
+##  Escalabilidad
 
 Gracias al desacoplamiento, puedes:
 
