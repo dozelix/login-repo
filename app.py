@@ -1,7 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from servicio import auth_service # Tu lógica profesional existente
+from servicio import auth_service # lógica existente
+import os
 
 app = FastAPI(title="Servidor de Autenticación Seguro")
 
@@ -23,7 +26,6 @@ class UserAuth(BaseModel):
 
 @app.post("/login")
 async def login(data: UserAuth):
-    """Reemplaza la lógica de render_login"""
     import persistencia.db_manager as db
     if db.verificar_credenciales(data.username, data.password):
         return {"status": "success", "message": "Autenticación exitosa"}
@@ -31,10 +33,33 @@ async def login(data: UserAuth):
 
 @app.post("/registro")
 async def registro(data: UserAuth):
-    """Reemplaza la lógica de render_registro"""
     exito, mensaje = auth_service.validar_registro(data.username, data.password)
     if exito:
         return {"status": "success", "message": mensaje}
     raise HTTPException(status_code=400, detail=mensaje)
+
+# --- RUTAS DE ARCHIVOS ESTÁTICOS (Frontend) ---
+# Montar carpeta frontend como /static
+app.mount("/static", StaticFiles(directory="frondend"), name="static")
+
+@app.get("/")
+async def root():
+    """Redirige al login"""
+    return FileResponse("frondend/login.html")
+
+@app.get("/login")
+async def login_page():
+    """Página de inicio de sesión"""
+    return FileResponse("frondend/login.html")
+
+@app.get("/register")
+async def register_page():
+    """Página de registro"""
+    return FileResponse("frondend/register.html")
+
+@app.get("/dashboard")
+async def dashboard_page():
+    """Página del dashboard"""
+    return FileResponse("frondend/dashboard.html")
 
 # Para ejecutar: uvicorn app:app --reload
