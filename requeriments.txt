@@ -3,3 +3,4 @@ mysql-connector
 dotenv
 bcrypt
 fastapi
+uvicorn
