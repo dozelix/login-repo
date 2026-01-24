@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="style.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self';">
+</head>
+<body>
+    <div class="auth-container">
+        <section id="login-section">
+            <h1>INICIAR SESIÓN</h1>
+            <input type="text" id="user" placeholder="Usuario" required>
+            <input type="password" id="pass" placeholder="Contraseña" required>
+            <button onclick="handleLogin()">ENTRAR</button>
+            <p>¿No tienes cuenta? <a href="register.html">Regístrate</a></p>
+        </section>
+    </div>
+    <script src="auth-logic.js"></script>
+</body>
+</html>

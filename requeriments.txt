@@ -1,5 +1,6 @@
 password-validator
-steamlit
 mysql-connector
 dotenv
 bcrypt
+fastapi
+uvicorn

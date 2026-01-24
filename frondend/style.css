@@ -1,0 +1,28 @@
+body {
+    background: #CEC199;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+.auth-container {
+    background: #c2b280;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px #615940;
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+.hidden { display: none; }
+
+input {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 13px;
+    background: #ede8d9;
+    border: none;
+    border-radius: 20px;
+}   

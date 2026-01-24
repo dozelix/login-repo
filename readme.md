@@ -1,118 +1,79 @@
+# **Sistema de Autenticación Modular (Arquitectura de 4 Capas \- Web)**
 
-# Sistema de Autenticación Modular (Arquitectura de 4 Capas)
+Este proyecto es una **plantilla profesional de login y registro** que ha evolucionado de una estructura monolítica en Streamlit a una **arquitectura web desacoplada**. Utiliza **FastAPI** como orquestador del backend y una interfaz moderna basada en **HTML5, CSS3 y JavaScript nativo**.  
+El diseño sigue los principios de **Clean Architecture**, permitiendo que la lógica de negocio y la persistencia de datos sean totalmente independientes de la interfaz de usuario.
 
-Este proyecto es una **plantilla profesional de login y registro** desarrollada con **Python** y **Streamlit**. Utiliza una **arquitectura limpia (Clean Architecture)** organizada en capas, lo que permite intercambiar el motor de base de datos o la interfaz gráfica con un esfuerzo mínimo.
+## **Estructura del Proyecto**
 
----
-
-## Estructura del Proyecto
-
-```
-LOGIN/
-│
-├── app.py                 # Orquestador principal y navegación
-├── .env                   # Variables de entorno (Credenciales de DB)
-├── requirements.txt       # Dependencias del proyecto
-│
-├── ui/                    # CAPA DE PRESENTACIÓN (Streamlit)
-│    └── login_view.py     # Formularios y gestión de estados visuales
-│
-├── servicio/              # CAPA DE SERVICIO (Lógica de Negocio)
-│    └── auth_service.py   # Validaciones, reglas de negocio y hashing
-│
-├── persistencia/          # CAPA DE DATOS (MySQL)
-│    └── db_manager.py     # Consultas SQL y gestión de conexión
-│
-└── modelos/               # CAPA DE ENTIDADES
-     └── usuario.py        # Clase Usuario (Estructura de datos)
-
-```
-
----
-
-##  Descripción de las Capas
-
-### 1. **Capa de Presentación (ui/)**
-
-Gestiona exclusivamente la interfaz con **Streamlit**. Captura los inputs del usuario y delega la responsabilidad de validación a la capa de servicio.
-
-### 2. **Capa de Servicio (servicio/)**
-
-El **"cerebro"** del sistema. Coordina las reglas de negocio:
-
-* Validación de complejidad de clave con `password-validator`.
-* Encriptación de contraseñas mediante **bcrypt**.
-* Toma de decisiones basada en las respuestas de la base de datos.
-
-### 3. **Capa de Persistencia (persistencia/)**
-
-Encargada del acceso a datos. Implementa la conexión a **MySQL** utilizando variables de entorno para una configuración segura.
-
-### 4. **Capa de Modelos (modelos/)**
-
-Define el objeto `Usuario`, asegurando que los datos viajen de forma estandarizada entre la base de datos y la interfaz.
-
----
-
-##  Instalación y Ejecución
-
-1. **Clonar el proyecto:**
-```bash
-git clone <URL_DEL_REPOSITORIO>
-cd LOGIN
-
+```python
+LOGIN/  
+│  
+├── app.py                 \# Servidor API REST (FastAPI) y ruteo de estáticos  
+├── .env                   \# Variables de entorno (Credenciales de base de datos)  
+├── requirements.txt       \# Dependencias del sistema (FastAPI, Bcrypt, etc.)  
+│  
+├── frontend/              \# CAPA DE PRESENTACIÓN (Web Nativa)  
+│    ├── login.html        \# Formulario de acceso  
+│    ├── register.html     \# Formulario de nuevo usuario  
+│    ├── style.css         \# Estética visual (Paleta Ocre/Arena)  
+│    └── auth\_logic.js     \# Lógica de cliente y sanitización XSS  
+│  
+├── servicio/              \# CAPA DE SERVICIO (Lógica de Negocio)  
+│    └── auth\_service.py   \# Hashing Bcrypt y validaciones de seguridad  
+│  
+├── persistencia/          \# CAPA DE DATOS (MySQL)  
+│    └── db\_manager.py     \# Consultas parametrizadas y gestión de conexión  
+│  
+└── modelos/               \# CAPA DE ENTIDADES  
+     └── usuario.py        \# Objeto Usuario (Estructura de datos)
 ```
 
+## **Tecnologías y Capas**
 
-2. **Configurar el entorno:**
-modifica el archivo `.env` en la raíz con tus credenciales:
-```env
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=tu_password
-DB_NAME=generic_db
+### **1\. Capa de Presentación (frontend/)**
 
+Se ha migrado a un entorno web estándar. El archivo auth\_logic.js actúa como mediador, gestionando las peticiones asíncronas (fetch) hacia la API y realizando la limpieza de datos en el cliente para prevenir ataques de inyección básica.
+
+### **2\. Capa de Servicio (servicio/)**
+
+Contiene la lógica crítica. Aquí se procesa el cifrado de contraseñas mediante **Bcrypt** antes de enviarlas a la base de datos, asegurando que la información sensible nunca se almacene en texto plano.
+
+### **3\. Capa de Persistencia (persistencia/)**
+
+Encargada de la comunicación con **MySQL**. Utiliza técnicas de **consultas parametrizadas** para blindar el sistema contra ataques de **Inyección SQL**.
+
+## **Instalación y Ejecución**
+
+1. **Configurar la Base de Datos:** 
+
+```console
+   Crea un archivo .env en la raíz con tus credenciales:  
+   DB\_HOST=localhost  
+   DB\_USER=tu\_usuario  
+   DB\_PASS=tu\_password  
+   DB\_NAME=tu\_base\_de\_datos
 ```
 
+2. **Instalar Dependencias:**  
 
-3. **Instalar dependencias:**
-```bash
-pip install -r requirements.txt
-
+```python
+   pip install \-r requirements.txt
 ```
 
+3. **Lanzar el Servidor:**  
 
-4. **Ejecutar la aplicación:**
-```bash
-streamlit run app.py
-
+```console
+   uvicorn app:app \--reload
 ```
 
+   *Accede a http://localhost:8000 para ver la interfaz de usuario.*
 
+## **🔐 Seguridad Implementada**
 
----
+* **Sanitización XSS:** Control de caracteres especiales en el frontend antes de la transmisión.  
+* **Bcrypt Hashing:** Implementación de *salts* aleatorios para la protección de identidades.  
+* **CORS Enabled:** Configuración de middleware en FastAPI para permitir comunicación segura entre origen y destino.  
+* **Arquitectura Desacoplada:** Facilita la auditoría de seguridad al separar claramente la entrada de datos de la ejecución de procesos.
 
-##  Seguridad de Nivel Profesional
-
-* **Bcrypt Hashing:** Implementa *salts* aleatorios para proteger contra ataques de tablas arcoíris y fuerza bruta.
-* **Variables de Entorno:** Uso de `python-dotenv` para mantener las credenciales fuera del código fuente.
-* **Validación Robusta:** Reglas estrictas para contraseñas (min. 8 caracteres, mayúsculas, números y símbolos).
-* **Inyección SQL:** Consultas parametrizadas para evitar ataques maliciosos a la base de datos.
-
----
-
-##  Escalabilidad
-
-Gracias al desacoplamiento, puedes:
-
-* Cambiar MySQL por **PostgreSQL** o **SQLite** solo tocando la capa de persistencia.
-* Cambiar Streamlit por **Flask/FastAPI** solo tocando la capa de presentación.
-
----
-
-**Autor:** DøzzeL
-
-*Enfoque en arquitectura limpia, modularidad y seguridad.*
-
-
-
+**Autor:** DøzzeL  
+*Desarrollo enfocado en modularidad, escalabilidad y buenas prácticas de ingeniería de software.*
