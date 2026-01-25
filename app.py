@@ -22,7 +22,6 @@ class UserAuth(BaseModel):
     username: str
     password: str
 
-# --- ENDPOINTS (Rutas que reemplazarán a render_login y render_registro) ---
 
 @app.post("/login")
 async def login(data: UserAuth):
@@ -38,28 +37,23 @@ async def registro(data: UserAuth):
         return {"status": "success", "message": mensaje}
     raise HTTPException(status_code=400, detail=mensaje)
 
+@app.get("/dashboard")
+async def dashboard_api():
+    """Endpoint de API para validar sesión en dashboard"""
+    return {"status": "authenticated"}
+
 # --- RUTAS DE ARCHIVOS ESTÁTICOS (Frontend) ---
-# Montar carpeta frontend como /static
-app.mount("/static", StaticFiles(directory="frondend"), name="static")
+# Montar carpeta frontend para servir archivos estáticos (CSS, JS, etc.)
+app.mount("/static", StaticFiles(directory="frondend"))
 
 @app.get("/")
 async def root():
     """Redirige al login"""
     return FileResponse("frondend/login.html")
 
-@app.get("/login")
-async def login_page():
+@app.get("/home")
+async def home_page():
     """Página de inicio de sesión"""
     return FileResponse("frondend/login.html")
-
-@app.get("/register")
-async def register_page():
-    """Página de registro"""
-    return FileResponse("frondend/register.html")
-
-@app.get("/dashboard")
-async def dashboard_page():
-    """Página del dashboard"""
-    return FileResponse("frondend/dashboard.html")
 
 # Para ejecutar: uvicorn app:app --reload

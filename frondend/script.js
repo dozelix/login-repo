@@ -7,6 +7,10 @@ function mostrarLogin() {
     document.getElementById('registro-view').classList.add('hidden');
     document.getElementById('login-view').classList.remove('hidden');
 }
+function mostarInicio(){
+    window.location.href = "/frontend/inicio.html";
+}
+
 
 // Aquí podrías luego capturar los datos del form
 document.getElementById('form_login').onsubmit = (e) => {
