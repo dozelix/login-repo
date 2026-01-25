@@ -3,8 +3,8 @@
  * Este script gestiona la captura, limpieza y envío de datos al backend.
  */
 
-// Configuración del servidor (ajusta la URL según tu entorno)
-const API_URL = "http://localhost:8001";
+// Configuración del servidor - usar URL relativa
+const API_URL = "";  // URL vacía = mismo servidor y puerto
 
 /**
  * Sanitiza los inputs para evitar inyecciones básicas de scripts (XSS)

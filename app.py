@@ -1,7 +1,7 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 from servicio import auth_service
 import os
@@ -10,12 +10,15 @@ import os
 app = FastAPI(title="Servidor de Autenticación Seguro")
 
 # --- CONFIGURACIÓN DE SEGURIDAD (CORS) - DEBE SER LO PRIMERO ---
+# Permitir CORS desde cualquier origen
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=".*",  # Permitir cualquier origen
-    allow_credentials=True,
+    allow_origins=["*"],  # Permitir cualquier origen
+    allow_credentials=False,  # False cuando se usa allow_origins=["*"]
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+    max_age=600,
 )
 
 # --- MODELOS DE DATOS ---
