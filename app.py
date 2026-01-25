@@ -3,18 +3,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from servicio import auth_service # lógica existente
+from servicio import auth_service
 import os
 
+# Crear la app
 app = FastAPI(title="Servidor de Autenticación Seguro")
 
-# --- CONFIGURACIÓN DE SEGURIDAD (CORS) ---
-# Permite que tus archivos HTML se comuniquen con este servidor Python
+# --- CONFIGURACIÓN DE SEGURIDAD (CORS) - DEBE SER LO PRIMERO ---
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # En producción, limita esto a tu dominio
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origin_regex=".*",  # Permitir cualquier origen
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 # --- MODELOS DE DATOS ---
@@ -22,29 +23,45 @@ class UserAuth(BaseModel):
     username: str
     password: str
 
+# --- RUTAS DE API (DEBEN IR ANTES DE MONTAR ESTÁTICOS) ---
 
 @app.post("/login")
 async def login(data: UserAuth):
-    import persistencia.db_manager as db
-    if db.verificar_credenciales(data.username, data.password):
-        return {"status": "success", "message": "Autenticación exitosa"}
-    raise HTTPException(status_code=401, detail="Usuario o contraseña incorrectos")
+    try:
+        print(f"DEBUG: Intento de login para usuario: {data.username}")
+        from servicio.auth_service import intentar_login
+        resultado = intentar_login(data.username, data.password)
+        print(f"DEBUG: Resultado de intentar_login: {resultado}")
+        if resultado:
+            print(f"DEBUG: Login exitoso para {data.username}")
+            return {"status": "success", "message": "Autenticación exitosa"}
+        print(f"DEBUG: Credenciales incorrectas para {data.username}")
+        raise HTTPException(status_code=401, detail="Usuario o contraseña incorrectos")
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"ERROR en login: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 @app.post("/registro")
 async def registro(data: UserAuth):
-    exito, mensaje = auth_service.validar_registro(data.username, data.password)
-    if exito:
-        return {"status": "success", "message": mensaje}
-    raise HTTPException(status_code=400, detail=mensaje)
+    try:
+        exito, mensaje = auth_service.validar_registro(data.username, data.password)
+        if exito:
+            return {"status": "success", "message": mensaje}
+        raise HTTPException(status_code=400, detail=mensaje)
+    except Exception as e:
+        print(f"Error en registro: {e}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
-@app.get("/dashboard")
+@app.get("/api/dashboard")
 async def dashboard_api():
     """Endpoint de API para validar sesión en dashboard"""
     return {"status": "authenticated"}
 
-# --- RUTAS DE ARCHIVOS ESTÁTICOS (Frontend) ---
-# Montar carpeta frontend para servir archivos estáticos (CSS, JS, etc.)
-app.mount("/static", StaticFiles(directory="frondend"))
+# --- RUTAS DE PÁGINAS HTML ---
 
 @app.get("/")
 async def root():
@@ -55,5 +72,14 @@ async def root():
 async def home_page():
     """Página de inicio de sesión"""
     return FileResponse("frondend/login.html")
+
+@app.get("/dashboard-page")
+async def dashboard_page():
+    """Página del dashboard"""
+    return FileResponse("frondend/inicio.html")
+
+# --- RUTAS DE ARCHIVOS ESTÁTICOS (Frontend) ---
+# MONTAR ESTÁTICOS AL FINAL
+app.mount("/static", StaticFiles(directory="frondend"))
 
 # Para ejecutar: uvicorn app:app --reload

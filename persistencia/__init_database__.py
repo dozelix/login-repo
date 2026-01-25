@@ -4,7 +4,11 @@ Ejecutar este archivo UNA SOLA VEZ para crear la estructura necesaria.
 """
 import mysql.connector
 import os
+import sys
 from dotenv import load_dotenv
+
+# Agregar el directorio padre al path para importar módulos
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Cargamos las variables del .env
 load_dotenv()

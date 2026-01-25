@@ -7,7 +7,7 @@ function mostrarLogin() {
     document.getElementById('registro-view').classList.add('hidden');
     document.getElementById('login-view').classList.remove('hidden');
 }
-function mostarInicio(){
+function mostrarInicio() {
     window.location.href = "/frontend/inicio.html";
 }
 
