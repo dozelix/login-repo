@@ -3,8 +3,8 @@
  * Este script gestiona la captura, limpieza y envío de datos al backend.
  */
 
-// Configuración del servidor (ajusta la URL según tu entorno)
-const API_URL = "http://localhost:8000";
+// Configuración del servidor - usar URL relativa
+const API_URL = "";  // URL vacía = mismo servidor y puerto
 
 /**
  * Sanitiza los inputs para evitar inyecciones básicas de scripts (XSS)
@@ -45,7 +45,7 @@ async function handleLogin() {
         if (response.ok) {
             alert("Acceso concedido. Redirigiendo...");
             // Aquí manejarías el token de sesión o redirección
-            window.location.href = "dashboard.html"; 
+            window.location.href = "/static/inicio.html";
         } else {
             alert(`Error: ${result.detail || "Credenciales incorrectas"}`);
         }
@@ -91,7 +91,7 @@ async function handleRegister() {
 
         if (response.ok) {
             alert(result.message || "Cuenta creada con éxito.");
-            window.location.href = "login.html";
+            window.location.href = "/static/login.html";
         } else {
             alert(`Error en registro: ${result.detail}`);
         }

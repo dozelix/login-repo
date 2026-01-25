@@ -1,38 +1,49 @@
-# **Sistema de Autenticación Modular (Arquitectura de 4 Capas \- Web)**
+# **Sistema de Autenticación Modular (Arquitectura de 4 Capas - Web)**
 
 Este proyecto es una **plantilla profesional de login y registro** que ha evolucionado de una estructura monolítica en Streamlit a una **arquitectura web desacoplada**. Utiliza **FastAPI** como orquestador del backend y una interfaz moderna basada en **HTML5, CSS3 y JavaScript nativo**.  
 El diseño sigue los principios de **Clean Architecture**, permitiendo que la lógica de negocio y la persistencia de datos sean totalmente independientes de la interfaz de usuario.
 
 ## **Estructura del Proyecto**
 
-```python
-LOGIN/  
-│  
-├── app.py                 \# Servidor API REST (FastAPI) y ruteo de estáticos  
-├── .env                   \# Variables de entorno (Credenciales de base de datos)  
-├── requirements.txt       \# Dependencias del sistema (FastAPI, Bcrypt, etc.)  
-│  
-├── frontend/              \# CAPA DE PRESENTACIÓN (Web Nativa)  
-│    ├── login.html        \# Formulario de acceso  
-│    ├── register.html     \# Formulario de nuevo usuario  
-│    ├── style.css         \# Estética visual (Paleta Ocre/Arena)  
-│    └── auth\_logic.js     \# Lógica de cliente y sanitización XSS  
-│  
-├── servicio/              \# CAPA DE SERVICIO (Lógica de Negocio)  
-│    └── auth\_service.py   \# Hashing Bcrypt y validaciones de seguridad  
-│  
-├── persistencia/          \# CAPA DE DATOS (MySQL)  
-│    └── db\_manager.py     \# Consultas parametrizadas y gestión de conexión  
-│  
-└── modelos/               \# CAPA DE ENTIDADES  
-     └── usuario.py        \# Objeto Usuario (Estructura de datos)
+```
+LOGIN/
+│
+├── app.py                 # Servidor API REST (FastAPI) y ruteo de estáticos
+├── .env                   # Variables de entorno (Credenciales de base de datos)
+├── requirements.txt       # Dependencias del sistema (FastAPI, Bcrypt, etc.)
+│
+├── frondend/              # CAPA DE PRESENTACIÓN (Web Nativa)
+│    ├── login.html        # Formulario de acceso
+│    ├── register.html     # Formulario de nuevo usuario
+│    ├── inicio.html       # Página de dashboard (post-login)
+│    ├── style.css         # Estética visual (Paleta Ocre/Arena)
+│    └── auth_logic.js     # Lógica de cliente y sanitización XSS
+│
+├── servicio/              # CAPA DE SERVICIO (Lógica de Negocio)
+│    └── auth_service.py   # Hashing Bcrypt y validaciones de seguridad
+│
+├── persistencia/          # CAPA DE DATOS (MySQL)
+│    ├── db_manager.py     # Consultas parametrizadas y gestión de conexión
+│    └── user_repo.py      # Repositorio de usuarios
+│
+├── modelos/               # CAPA DE ENTIDADES
+│    └── usuario.py        # Objeto Usuario (Estructura de datos)
+│
+└── colores/               # Paletas de color del proyecto
+     ├── color-palette-dark.jpg
+     └── color-palette-white.jpg
 ```
 
 ## **Tecnologías y Capas**
 
-### **1\. Capa de Presentación (frontend/)**
+### **1\. Capa de Presentación (frondend/)**
 
-Se ha migrado a un entorno web estándar. El archivo auth\_logic.js actúa como mediador, gestionando las peticiones asíncronas (fetch) hacia la API y realizando la limpieza de datos en el cliente para prevenir ataques de inyección básica.
+Se ha migrado a un entorno web estándar. El archivo `auth_logic.js` actúa como mediador, gestionando las peticiones asíncronas (fetch) hacia la API y realizando la limpieza de datos en el cliente para prevenir ataques de inyección básica.
+
+El flujo de autenticación completo incluye:
+- **login.html:** Formulario de acceso con validación de campos
+- **register.html:** Formulario de registro con validación de complejidad de contraseña
+- **inicio.html:** Página de dashboard mostrada tras login exitoso, con opción de cerrar sesión
 
 ### **2\. Capa de Servicio (servicio/)**
 
@@ -42,6 +53,14 @@ Contiene la lógica crítica. Aquí se procesa el cifrado de contraseñas median
 
 Encargada de la comunicación con **MySQL**. Utiliza técnicas de **consultas parametrizadas** para blindar el sistema contra ataques de **Inyección SQL**.
 
+## **Flujo de Usuario**
+
+1. **Registro:** El usuario accede a `/register.html`, completa el formulario con username y contraseña (mínimo 8 caracteres, mayúscula, número y símbolo). El sistema valida y guarda en la base de datos.
+
+2. **Login:** El usuario accede a `/login.html`, ingresa sus credenciales. El sistema verifica contra MySQL y retorna éxito o error.
+
+3. **Dashboard:** Tras login exitoso, el usuario es redirigido a `/dashboard-page` (inicio.html) donde puede ver un mensaje de bienvenida y cerrar sesión.
+
 ## **Instalación y Ejecución**
 
 1. **Configurar la Base de Datos:** 
@@ -49,9 +68,9 @@ Encargada de la comunicación con **MySQL**. Utiliza técnicas de **consultas pa
 ```console
    Crea un archivo .env en la raíz con tus credenciales:  
    DB\_HOST=localhost  
-   DB\_USER=tu\_usuario  
-   DB\_PASS=tu\_password  
-   DB\_NAME=tu\_base\_de\_datos
+   DB\_USER=tu usuario  
+   DB\_PASS=tu password  
+   DB\_NAME=tu base de datos
 ```
 
 2. **Instalar Dependencias:**  
@@ -68,7 +87,7 @@ Encargada de la comunicación con **MySQL**. Utiliza técnicas de **consultas pa
 
    *Accede a http://localhost:8000 para ver la interfaz de usuario.*
 
-## **🔐 Seguridad Implementada**
+## **Seguridad Implementada**
 
 * **Sanitización XSS:** Control de caracteres especiales en el frontend antes de la transmisión.  
 * **Bcrypt Hashing:** Implementación de *salts* aleatorios para la protección de identidades.  

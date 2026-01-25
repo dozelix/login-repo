@@ -1,7 +1,7 @@
 import bcrypt
 from password_validator import PasswordValidator
 # Importamos la capa de persistencia (que definiremos en el siguiente paso)
-import persistencia.db_manager as db
+from persistencia.db_manager import db_manager
 
 def _configurar_reglas():
     """Define qué hace que una contraseña sea válida."""
@@ -20,7 +20,7 @@ def validar_registro(username, password):
         return False, "Faltan datos obligatorios."
     
     # 1. Consultar a persistencia si el usuario existe
-    if db.buscar_usuario(username):
+    if db_manager.buscar_usuario(username):
         return False, "El nombre de usuario ya está ocupado."
     
     # 2. Validar complejidad de la clave
@@ -30,7 +30,7 @@ def validar_registro(username, password):
     
     # 3. Hashear y enviar a guardar
     pw_hash = generar_hash(password)
-    if db.guardar_usuario(username, pw_hash):
+    if db_manager.guardar_usuario(username, pw_hash):
         return True, "Registro exitoso."
     
     return False, "Error al conectar con la base de datos."
@@ -41,7 +41,7 @@ def intentar_login(username, password):
         return False
     
     # Pedimos los datos a la capa de persistencia
-    usuario_db = db.buscar_usuario(username)
+    usuario_db = db_manager.buscar_usuario(username)
     
     if usuario_db:
         # bcrypt.checkpw compara la clave plana con el hash almacenado
