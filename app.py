@@ -69,20 +69,20 @@ async def dashboard_api():
 @app.get("/")
 async def root():
     """Redirige al login"""
-    return FileResponse("frondend/login.html")
+    return FileResponse("static/login.html")
 
 @app.get("/home")
 async def home_page():
     """Página de inicio de sesión"""
-    return FileResponse("frondend/login.html")
+    return FileResponse("static/login.html")
 
 @app.get("/dashboard-page")
 async def dashboard_page():
     """Página del dashboard"""
-    return FileResponse("frondend/inicio.html")
+    return FileResponse("static/inicio.html")
 
 # --- RUTAS DE ARCHIVOS ESTÁTICOS (Frontend) ---
 # MONTAR ESTÁTICOS AL FINAL
-app.mount("/static", StaticFiles(directory="frondend"))
+app.mount("/static", StaticFiles(directory="static"))
 
 # Para ejecutar: uvicorn app:app --reload

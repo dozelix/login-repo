@@ -12,7 +12,7 @@ LOGIN/
 ├── .env                   # Variables de entorno (Credenciales de base de datos)
 ├── requirements.txt       # Dependencias del sistema (FastAPI, Bcrypt, etc.)
 │
-├── frondend/              # CAPA DE PRESENTACIÓN (Web Nativa)
+├── static/                # CAPA DE PRESENTACIÓN (Web Nativa)
 │    ├── login.html        # Formulario de acceso
 │    ├── register.html     # Formulario de nuevo usuario
 │    ├── inicio.html       # Página de dashboard (post-login)
@@ -29,14 +29,14 @@ LOGIN/
 ├── modelos/               # CAPA DE ENTIDADES
 │    └── usuario.py        # Objeto Usuario (Estructura de datos)
 │
-└── colores/               # Paletas de color del proyecto
+└── colores/               # Paletas de color del proyecto (esto puedes borrarlo o simplemente cambiarlo, fue una guia para mi)
      ├── color-palette-dark.jpg
      └── color-palette-white.jpg
 ```
 
 ## **Tecnologías y Capas**
 
-### **1\. Capa de Presentación (frondend/)**
+### **1\. Capa de Presentación (static/)**
 
 Se ha migrado a un entorno web estándar. El archivo `auth_logic.js` actúa como mediador, gestionando las peticiones asíncronas (fetch) hacia la API y realizando la limpieza de datos en el cliente para prevenir ataques de inyección básica.
 
