@@ -45,7 +45,7 @@ async function handleLogin() {
         if (response.ok) {
             alert("Acceso concedido. Redirigiendo...");
             // Aquí manejarías el token de sesión o redirección
-            window.location.href = "/static/inicio.html";
+            window.location.href = "/static/dashboard-page.html";
         } else {
             alert(`Error: ${result.detail || "Credenciales incorrectas"}`);
         }

@@ -8,7 +8,7 @@ function mostrarLogin() {
     document.getElementById('login-view').classList.remove('hidden');
 }
 function mostrarInicio() {
-    window.location.href = "/frontend/inicio.html";
+    window.location.href = "/static/dashboard-page.html";
 }
 
 

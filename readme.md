@@ -15,7 +15,7 @@ LOGIN/
 ├── static/                # CAPA DE PRESENTACIÓN (Web Nativa)
 │    ├── login.html        # Formulario de acceso
 │    ├── register.html     # Formulario de nuevo usuario
-│    ├── inicio.html       # Página de dashboard (post-login)
+│    ├── dashboard-page.html       # Página de dashboard (post-login)
 │    ├── style.css         # Estética visual (Paleta Ocre/Arena)
 │    └── auth_logic.js     # Lógica de cliente y sanitización XSS
 │
@@ -43,7 +43,7 @@ Se ha migrado a un entorno web estándar. El archivo `auth_logic.js` actúa como
 El flujo de autenticación completo incluye:
 - **login.html:** Formulario de acceso con validación de campos
 - **register.html:** Formulario de registro con validación de complejidad de contraseña
-- **inicio.html:** Página de dashboard mostrada tras login exitoso, con opción de cerrar sesión
+- **dashboard-page.html:** Página de dashboard mostrada tras login exitoso, con opción de cerrar sesión
 
 ### **2\. Capa de Servicio (servicio/)**
 
@@ -59,7 +59,7 @@ Encargada de la comunicación con **MySQL**. Utiliza técnicas de **consultas pa
 
 2. **Login:** El usuario accede a `/login.html`, ingresa sus credenciales. El sistema verifica contra MySQL y retorna éxito o error.
 
-3. **Dashboard:** Tras login exitoso, el usuario es redirigido a `/dashboard-page` (inicio.html) donde puede ver un mensaje de bienvenida y cerrar sesión.
+3. **Dashboard:** Tras login exitoso, el usuario es redirigido a `/dashboard-page` donde puede ver un mensaje de bienvenida y cerrar sesión.
 
 ## **Instalación y Ejecución**
 

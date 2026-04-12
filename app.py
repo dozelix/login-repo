@@ -73,13 +73,13 @@ async def root():
 
 @app.get("/home")
 async def home_page():
-    """Página de inicio de sesión"""
+    """Página de login"""
     return FileResponse("static/login.html")
 
 @app.get("/dashboard-page")
 async def dashboard_page():
     """Página del dashboard"""
-    return FileResponse("static/inicio.html")
+    return FileResponse("static/dashboard-page.html")
 
 # --- RUTAS DE ARCHIVOS ESTÁTICOS (Frontend) ---
 # MONTAR ESTÁTICOS AL FINAL
