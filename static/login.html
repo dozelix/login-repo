@@ -2,19 +2,18 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <!-- Agrega tu CSS: <link rel="stylesheet" href="/static/tu-estilo.css"> -->
 </head>
 <body>
-    <div class="auth-container">
-        <section id="login-section">
-            <h1>INICIAR SESIÓN</h1>
-            <input type="text" id="user" placeholder="Usuario" required>
-            <input type="password" id="pass" placeholder="Contraseña" required>
-            <button onclick="handleLogin()">ENTRAR</button>
-            <p>¿No tienes cuenta? <a href="/static/register.html">Regístrate</a></p>
-        </section>
-    </div>
+    <section id="login-section">
+        <h1>INICIAR SESIÓN</h1>
+        <input type="text" id="user" placeholder="Usuario" required>
+        <input type="password" id="pass" placeholder="Contraseña" required>
+        <button onclick="handleLogin()">ENTRAR</button>
+        <p>¿No tienes cuenta? <a href="/static/register.html">Regístrate</a></p>
+    </section>
     <script src="/static/auth-logic.js"></script>
 </body>
 </html>

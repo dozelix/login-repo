@@ -1,7 +1,6 @@
 # **Sistema de Autenticación Modular (Arquitectura de 4 Capas - Web)**
 
-Este proyecto es una **plantilla profesional de login y registro** que ha evolucionado de una estructura monolítica en Streamlit a una **arquitectura web desacoplada**. Utiliza **FastAPI** como orquestador del backend y una interfaz moderna basada en **HTML5, CSS3 y JavaScript nativo**.  
-El diseño sigue los principios de **Clean Architecture**, permitiendo que la lógica de negocio y la persistencia de datos sean totalmente independientes de la interfaz de usuario.
+Plantilla profesional de login y registro con **FastAPI** + **MySQL**, inspirada en **Clean Architecture** (4 capas). Sin CSS incluido — tú defines el estilo en tu propio `static/style.css`.
 
 ## **Estructura del Proyecto**
 
@@ -9,41 +8,35 @@ El diseño sigue los principios de **Clean Architecture**, permitiendo que la l�
 LOGIN/
 │
 ├── app.py                 # Servidor API REST (FastAPI) y ruteo de estáticos
-├── .env                   # Variables de entorno (Credenciales de base de datos)
-├── requirements.txt       # Dependencias del sistema (FastAPI, Bcrypt, etc.)
+├── .env.example           # Plantilla de variables de entorno (copia a .env)
+├── requirements.txt       # Dependencias (FastAPI, Bcrypt, mysql-connector)
 │
 ├── static/                # CAPA DE PRESENTACIÓN (Web Nativa)
 │    ├── login.html        # Formulario de acceso
 │    ├── register.html     # Formulario de nuevo usuario
-│    ├── dashboard-page.html       # Página de dashboard (post-login)
-│    ├── style.css         # Estética visual (Paleta Ocre/Arena)
-│    └── auth_logic.js     # Lógica de cliente y sanitización XSS
+│    ├── dashboard.html    # Página posterior al login
+│    └── auth-logic.js     # Lógica de cliente y sanitización XSS
 │
 ├── servicio/              # CAPA DE SERVICIO (Lógica de Negocio)
 │    └── auth_service.py   # Hashing Bcrypt y validaciones de seguridad
 │
 ├── persistencia/          # CAPA DE DATOS (MySQL)
-│    ├── db_manager.py     # Consultas parametrizadas y gestión de conexión
-│    └── user_repo.py      # Repositorio de usuarios
+│    └── db_manager.py     # Consultas parametrizadas y gestión de conexión
 │
-├── modelos/               # CAPA DE ENTIDADES
-│    └── usuario.py        # Objeto Usuario (Estructura de datos)
-│
-└── colores/               # Paletas de color del proyecto (esto puedes borrarlo o simplemente cambiarlo, fue una guia para mi)
-     ├── color-palette-dark.jpg
-     └── color-palette-white.jpg
+└── modelos/               # CAPA DE ENTIDADES
+     └── usuario.py        # Objeto Usuario (Estructura de datos)
 ```
 
 ## **Tecnologías y Capas**
 
 ### **1\. Capa de Presentación (static/)**
 
-Se ha migrado a un entorno web estándar. El archivo `auth_logic.js` actúa como mediador, gestionando las peticiones asíncronas (fetch) hacia la API y realizando la limpieza de datos en el cliente para prevenir ataques de inyección básica.
+Sin CSS incluido por defecto. Crea tu propio `static/style.css` y enlázalo desde los HTML. El archivo `auth-logic.js` gestiona las peticiones fetch y sanitización XSS.
 
 El flujo de autenticación completo incluye:
-- **login.html:** Formulario de acceso con validación de campos
+- **login.html:** Formulario de acceso
 - **register.html:** Formulario de registro con validación de complejidad de contraseña
-- **dashboard-page.html:** Página de dashboard mostrada tras login exitoso, con opción de cerrar sesión
+- **dashboard.html:** Página posterior al login, con botón de cerrar sesión
 
 ### **2\. Capa de Servicio (servicio/)**
 
@@ -59,19 +52,16 @@ Encargada de la comunicación con **MySQL**. Utiliza técnicas de **consultas pa
 
 2. **Login:** El usuario accede a `/login.html`, ingresa sus credenciales. El sistema verifica contra MySQL y retorna éxito o error.
 
-3. **Dashboard:** Tras login exitoso, el usuario es redirigido a `/dashboard-page` donde puede ver un mensaje de bienvenida y cerrar sesión.
+3. **Dashboard:** Tras login exitoso, el usuario es redirigido a `/dashboard-page`.
 
 ## **Instalación y Ejecución**
 
 1. **Configurar la Base de Datos:** 
 
-```console
-   Crea un archivo .env en la raíz con tus credenciales:  
-   DB\_HOST=localhost  
-   DB\_USER=tu usuario  
-   DB\_PASS=tu password  
-   DB\_NAME=tu base de datos
-```
+   ```console
+   cp .env.example .env
+   ```
+   Edita `.env` con tus credenciales MySQL.
 
 2. **Instalar Dependencias:**  
 

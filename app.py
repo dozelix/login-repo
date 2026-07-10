@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
-from servicio import auth_service
+from servicio.auth_service import intentar_login, validar_registro
 import os
 
 # Crear la app
@@ -32,8 +32,7 @@ class UserAuth(BaseModel):
 async def login(data: UserAuth):
     try:
         print(f"DEBUG: Intento de login para usuario: {data.username}")
-        from servicio.auth_service import intentar_login
-        resultado = intentar_login(data.username, data.password)
+            resultado = intentar_login(data.username, data.password)
         print(f"DEBUG: Resultado de intentar_login: {resultado}")
         if resultado:
             print(f"DEBUG: Login exitoso para {data.username}")
@@ -51,7 +50,7 @@ async def login(data: UserAuth):
 @app.post("/registro")
 async def registro(data: UserAuth):
     try:
-        exito, mensaje = auth_service.validar_registro(data.username, data.password)
+        exito, mensaje = validar_registro(data.username, data.password)
         if exito:
             return {"status": "success", "message": mensaje}
         raise HTTPException(status_code=400, detail=mensaje)
@@ -79,7 +78,7 @@ async def home_page():
 @app.get("/dashboard-page")
 async def dashboard_page():
     """Página del dashboard"""
-    return FileResponse("static/dashboard-page.html")
+    return FileResponse("static/dashboard.html")
 
 # --- RUTAS DE ARCHIVOS ESTÁTICOS (Frontend) ---
 # MONTAR ESTÁTICOS AL FINAL

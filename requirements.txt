@@ -1,6 +1,6 @@
 password-validator
 mysql-connector
-dotenv
+python-dotenv
 bcrypt
 fastapi
 uvicorn
